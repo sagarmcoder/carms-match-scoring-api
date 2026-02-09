@@ -7,8 +7,6 @@ Backend MVP for CaRMS residency program exploration and ranking using:
 - LangChain
 - FastAPI
 
-Built to demonstrate skills for the CaRMS Junior Data Scientist role using public data from `dnokes/Junior-Data-Scientist`.
-
 ## What it does
 - Ingests CaRMS source files from `Junior-Data-Scientist/`
 - Loads normalized tables into PostgreSQL
