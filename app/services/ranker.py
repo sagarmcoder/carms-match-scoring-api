@@ -37,6 +37,13 @@ def _cosine(a: list[float], b: list[float]) -> float:
     return sum(x * y for x, y in zip(a, b))
 
 
+def _snippet(text: str, max_chars: int = 120) -> str:
+    clean = " ".join(text.split())
+    if len(clean) <= max_chars:
+        return clean
+    return clean[:max_chars].rstrip() + "..."
+
+
 class ProgramRanker:
     def __init__(self, session: Session) -> None:
         self.session = session
@@ -49,11 +56,7 @@ class ProgramRanker:
             return rows
 
         needle = discipline_filter.lower()
-        return [
-            (p, d)
-            for p, d in rows
-            if needle in p.discipline_name.lower()
-        ]
+        return [(p, d) for p, d in rows if needle in p.discipline_name.lower()]
 
     def rank(self, query: str, top_k: int = 10, discipline: str | None = None) -> list[dict]:
         rows = self._load_docs(discipline_filter=discipline)
@@ -67,7 +70,7 @@ class ProgramRanker:
         query_terms = set(re.findall(r"[a-zA-Z0-9]+", query.lower()))
 
         scored = []
-        for (program, _), vec in zip(rows, doc_vecs):
+        for (program, doc), vec in zip(rows, doc_vecs):
             semantic = _cosine(query_vec, vec)
             keyword_bonus = 0.0
             joined = f"{program.program_name} {program.program_stream_name}".lower()
@@ -75,7 +78,7 @@ class ProgramRanker:
                 keyword_bonus = 0.1
             discipline_bonus = 0.2 if discipline and discipline.lower() in program.discipline_name.lower() else 0.0
             score = (0.7 * semantic) + discipline_bonus + keyword_bonus
-            scored.append((score, program))
+            scored.append((score, program, doc))
 
         scored.sort(key=lambda x: x[0], reverse=True)
         top = scored[:top_k]
@@ -86,6 +89,7 @@ class ProgramRanker:
                 "school_name": p.school_name,
                 "discipline_name": p.discipline_name,
                 "score": round(float(score), 4),
+                "description_snippet": _snippet(d.page_content),
             }
-            for score, p in top
+            for score, p, d in top
         ]

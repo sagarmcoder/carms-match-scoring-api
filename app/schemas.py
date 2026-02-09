@@ -14,9 +14,11 @@ class RankResult(BaseModel):
     school_name: str
     discipline_name: str
     score: float
+    description_snippet: str
 
 
 class RankResponse(BaseModel):
     query: str
     total_candidates: int
     results: list[RankResult]
+    message: Optional[str] = None

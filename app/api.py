@@ -45,8 +45,13 @@ def rank_programs(payload: RankRequest) -> RankResponse:
         top_k = payload.top_k or TOP_K_DEFAULT
         results = ranker.rank(payload.query, top_k=top_k, discipline=payload.discipline)
 
+    message = None
+    if not results:
+        message = "No matches found"
+
     return RankResponse(
         query=payload.query,
         total_candidates=len(results),
         results=results,
+        message=message,
     )

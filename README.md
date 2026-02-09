@@ -22,6 +22,7 @@ Backend MVP for CaRMS residency program exploration and ranking using:
 - `pipeline/definitions.py`: Dagster Definitions
 - `scripts/run_etl.py`: CLI ETL runner
 - `tests/`: smoke tests
+- `docs/samples/`: saved sample API responses
 
 ## Data Source
 Expected local path (mounted in Docker):
@@ -35,33 +36,9 @@ Required files used:
 ## Quick Start (Docker)
 ```bash
 docker compose up --build -d postgres
-```
-
-Run ETL once:
-```bash
-docker compose run --rm api python scripts/run_etl.py
-```
-
-Start API:
-```bash
+docker compose run --rm -e PYTHONPATH=/app api python scripts/run_etl.py
 docker compose up --build -d api
-```
-
-Start Dagster UI:
-```bash
 docker compose up --build -d dagster
-```
-
-## API Endpoints
-- `GET /health`
-- `GET /programs?discipline=Anesthesiology&school=University&limit=25`
-- `POST /rank`
-
-Example:
-```bash
-curl -X POST http://localhost:8000/rank \
-  -H "Content-Type: application/json" \
-  -d '{"query":"research heavy anesthesia program", "discipline":"Anesthesiology", "top_k":5}'
 ```
 
 ## Local (without Docker)
@@ -69,10 +46,44 @@ curl -X POST http://localhost:8000/rank \
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export DATABASE_URL='postgresql+psycopg2://postgres:postgres@localhost:5432/carms'
+
+export DATABASE_URL='postgresql+psycopg2://msagar@localhost:5432/carms'
 export DATA_DIR='/Users/msagar/Documents/New project/Junior-Data-Scientist'
-python scripts/run_etl.py
+PYTHONPATH=. python scripts/run_etl.py
+
 uvicorn app.api:app --reload
+```
+
+## API Endpoints
+- `GET /health`
+- `GET /programs?discipline=Anesthesiology&school=University&limit=25`
+- `POST /rank`
+
+## Example Queries (Pretty Output with jq)
+
+Pediatrics query:
+```bash
+curl -s -X POST http://127.0.0.1:8000/rank \
+  -H "Content-Type: application/json" \
+  -d '{"query":"pediatrics interview process","discipline":"Pediatrics","top_k":5}' | jq .
+```
+
+No-match query:
+```bash
+curl -s -X POST http://127.0.0.1:8000/rank \
+  -H "Content-Type: application/json" \
+  -d '{"query":"zzzzzzzzzz","discipline":"NonexistentDiscipline","top_k":5}' | jq .
+```
+
+Saved outputs:
+- `docs/samples/rank_pediatrics.json`
+- `docs/samples/rank_no_matches.json`
+
+## Verified ETL Counts
+```text
+disciplines: 37
+programs: 815
+program_docs: 815
 ```
 
 ## Tests
@@ -82,4 +93,6 @@ pytest -q
 
 ## Notes
 - Ranking uses a deterministic LangChain embedding class for offline demo reliability.
-- For production, swap `HashEmbeddings` with an API-backed embedding model.
+- Scores are rounded to 4 decimals and include a short `description_snippet`.
+- If no results are found, the API returns `message: "No matches found"`.
+- For higher semantic quality, swap `HashEmbeddings` with sentence-transformers or hosted embeddings.

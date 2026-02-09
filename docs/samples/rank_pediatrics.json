@@ -1,0 +1,47 @@
+{
+  "query": "pediatrics interview process",
+  "total_candidates": 5,
+  "results": [
+    {
+      "program_id": "1503|27056",
+      "program_name": "Queen’s University / Pediatrics / Kingston / CMG Stream for CMG",
+      "school_name": "Queen’s University",
+      "discipline_name": "Pediatrics",
+      "score": 0.4351,
+      "description_snippet": "# Queen’s University - Pediatrics - Kingston # 2025 R-1 Main Residency Match - first iteration CMG Stream for CMG ## Las..."
+    },
+    {
+      "program_id": "1503|27397",
+      "program_name": "McGill University / Pediatrics / Montreal / Regular Stream for All",
+      "school_name": "McGill University",
+      "discipline_name": "Pediatrics",
+      "score": 0.4278,
+      "description_snippet": "# McGill University - Pediatrics - Montreal # 2025 R-1 Main Residency Match - first iteration Regular Stream for All ##..."
+    },
+    {
+      "program_id": "1503|26776",
+      "program_name": "University of British Columbia / Pediatrics / Vancouver Island / CMG Stream for CMG",
+      "school_name": "University of British Columbia",
+      "discipline_name": "Pediatrics",
+      "score": 0.4274,
+      "description_snippet": "# University of British Columbia - Pediatrics - Vancouver Island # 2025 R-1 Main Residency Match - first iteration CMG S..."
+    },
+    {
+      "program_id": "1503|27368",
+      "program_name": "University of Ottawa / Pediatrics / Ottawa / CMG Stream for CMG",
+      "school_name": "University of Ottawa",
+      "discipline_name": "Pediatrics",
+      "score": 0.4233,
+      "description_snippet": "# University of Ottawa - Pediatrics - Ottawa # 2025 R-1 Main Residency Match - first iteration CMG Stream for CMG ## Las..."
+    },
+    {
+      "program_id": "1503|26547",
+      "program_name": "Queen’s University / Pediatrics / Kingston / IMG Stream for IMG",
+      "school_name": "Queen’s University",
+      "discipline_name": "Pediatrics",
+      "score": 0.4223,
+      "description_snippet": "# Queen’s University - Pediatrics - Kingston # 2025 R-1 Main Residency Match - first iteration IMG Stream for IMG ## Las..."
+    }
+  ],
+  "message": null
+}
