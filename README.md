@@ -96,3 +96,8 @@ pytest -q
 - Scores are rounded to 4 decimals and include a short `description_snippet`.
 - If no results are found, the API returns `message: "No matches found"`.
 - For higher semantic quality, swap `HashEmbeddings` with sentence-transformers or hosted embeddings.
+
+## Future Plans
+- Upgrade LangChain ranking from `HashEmbeddings` to `sentence-transformers` (`all-MiniLM-L6-v2`) for stronger semantic relevance.
+- Deploy API + Dagster + PostgreSQL on AWS (ECS/EC2 + RDS) with environment-based configuration.
+- Add scheduled Dagster runs and data quality checks for automated refresh and monitoring.
