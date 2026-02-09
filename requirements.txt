@@ -1,0 +1,12 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+sqlmodel==0.0.24
+psycopg2-binary==2.9.10
+dagster==1.11.8
+dagster-webserver==1.11.8
+langchain==0.3.27
+langchain-core==0.3.75
+pandas==2.3.2
+openpyxl==3.1.5
+pytest==8.4.2
+httpx==0.28.1

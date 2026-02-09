@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: carms
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d carms"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@postgres:5432/carms
+      DATA_DIR: /data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./Junior-Data-Scientist:/data:ro
+    ports:
+      - "8000:8000"
+
+  dagster:
+    build: .
+    command: ["dagster", "dev", "-m", "pipeline.definitions"]
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@postgres:5432/carms
+      DATA_DIR: /data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./Junior-Data-Scientist:/data:ro
+      - ./.dagster:/app/.dagster
+    ports:
+      - "3000:3000"

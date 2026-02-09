@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.env
+.DS_Store
+
+# Local data clone (keep source data out of this repo)
+Junior-Data-Scientist/
+
+# Dagster state
+.dagster/
+
+# IDE
+.vscode/
+.idea/
